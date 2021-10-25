@@ -1,12 +1,12 @@
 # Rom building script for CircleCI
 # coded by bruh™ aka Live0verfl0w
 
-MANIFEST_LINK=git://github.com/ProjectSakura/android.git
-BRANCH=10
-ROM_NAME=lineage
-DEVICE_CODENAME=dreamlte
-GITHUB_USER=Exynos-nigg
-GITHUB_EMAIL=vsht700@gmail.com
+MANIFEST_LINK=git://github.com/aex-tmp/manifest.git
+BRANCH=12.x
+ROM_NAME=aosp
+DEVICE_CODENAME=X00TD
+GITHUB_USER=Navin136
+GITHUB_EMAIL=nkwhitehat@gmail.com
 WORK_DIR=$(pwd)/${ROM_NAME}
 JOBS=nproc
 
@@ -22,20 +22,10 @@ repo init --depth=1 -u ${MANIFEST_LINK} -b ${BRANCH}
 repo sync --current-branch --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune -j${JOBS}
 
 # clone device sources
-git clone -b lineage-17.1 https://github.com/Sakura-Devices/device_samsung_dreamlte.git device/samsung/dreamlte 
-
-git clone -b lineage-17.1 https://github.com/Sakura-Devices/device_samsung_universal8895-common.git device/samsung/universal8895-common 
-
-git clone -b pie https://github.com/Sakura-Devices/kernel_samsung_universal8895.git kernel/samsung/universal8895 
-
-git clone -b lineage-17.1 https://github.com/Sakura-Devices/vendor_samsung_dreamlte.git vendor/samsung/dreamlte 
-
-git clone -b lineage-17.1 https://github.com/Sakura-Devices/vendor_samsung_universal8895-common.git vendor/samsung/universal8895-common 
-
-git clone -b lineage-17.1 https://github.com/LineageOS/android_hardware_samsung.git hardware/samsung
+rm -rf $ROM/device/asus/X00TD && git clone https://github.com/navin136/device_asus_X00TD -b twelve $ROM/device/asus/X00TD && rm -rf $ROM/device/asus/sdm660-common && git clone https://github.com/navin136/device_asus_sdm660-common -b twelve $ROM/device/asus/sdm660-common && rm -rf $ROM/vendor/asus && git clone https://github.com/navin136/vendor_asus -b twelve $ROM/vendor/asus --depth=1 && rm -rf $ROM/kernel/asus/sdm660 && git clone https://github.com/navin136/velocity -b twelve $ROM/kernel/asus/sdm660 --depth=1
 
 # Start building!
 . build/envsetup.sh
-lunch lineage_${DEVICE_CODENAME}-userdebug
+lunch aosp_${DEVICE_CODENAME}-eng
 mka bacon -j${JOBS}
 
